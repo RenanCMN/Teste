@@ -60,11 +60,22 @@ class Header extends Component {
   opentrue() {
     this.setState({ open: true })
   }
-
-
+  
+  componentDidMount(){
+     if(isAuthenticated()){
+       this.setState({isAuth: true});
+     }else{
+       this.setState({isAuth: false});
+     }
+  }
+  
+  setAuth(){
+    this.setState({isAuth: !this.state.isAuth})
+  }
   
   render() {
     const { classes } = this.props;
+    var {isAuth} = this.state;
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -78,8 +89,12 @@ class Header extends Component {
             <Typography variant="h6" className={classes.title}>
               <Link to="/" className={classes.linklog}>Site.com </Link>
             </Typography>
-            <Link to='/login' className={classes.linklog} ><Button color="inherit">Login</Button></Link>
-           
+            {
+              isAuth != null ?
+                <Link to='/login' className={classes.linklog} ><Button color="inherit" onPress={() => this.setAuth()}>{ isAuth ? 'Register':'Login'}</Button></Link>
+                :
+                null
+            }           
           </Toolbar>
         </AppBar>
       </div>
